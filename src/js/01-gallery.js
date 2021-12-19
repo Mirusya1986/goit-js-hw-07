@@ -1,6 +1,8 @@
 import { galleryItems } from './gallery-items.js';
 // Change code below this line
 const galleryContainer = document.querySelector('.gallery');
+let modal;
+
 const cardsMarkup = createGalleryItemsMarkup(galleryItems);
 
 galleryContainer.insertAdjacentHTML('beforeend', cardsMarkup);
@@ -30,5 +32,33 @@ function createGalleryItemsMarkup (galleryItems){
 galleryContainer.addEventListener('click', onGalleryItemClick)
 
 function onGalleryItemClick (event) {
-  event.preventDefault()
+  event.preventDefault();
+
+  const isImage = event.target.classList.contains("gallery__image");
+    if (!isImage) { 
+        return;
+        
+    }
+
+    createModalImg(event.target.dataset.source);
+    modal.show();
 }
+
+function createModalImg(gallery){
+ modal = basicLightbox.create(` <div class="modal">
+  <img src= "${event.target.dataset.source}">
+ </div>`, {
+     onShow: () =>{
+          window.addEventListener('keydown', onKeyboardClick);
+      },
+      onClose: () => {
+          window.removeEventListener('keydown', onKeyboardClick);
+       },  
+   });
+   }
+
+function onKeyboardClick(event){
+  if(event.code === 'Escape'){
+     modal.close();
+     };
+    }
